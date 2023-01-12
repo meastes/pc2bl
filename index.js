@@ -1,6 +1,14 @@
 const mechanize = require('mechanize');
+const yargs = require('yargs/yargs')
+const { hideBin } = require('yargs/helpers')
 
-const PRICECHARTING_URL = 'https://www.pricecharting.com/offers?seller=2oqzmffhcmudt7gryfywkitjj4&status=collection';
+const argv = yargs(hideBin(process.argv)).argv
+
+if (!argv.seller) {
+  throw new Error('seller missing');
+}
+
+const PRICECHARTING_URL = `https://www.pricecharting.com/offers?seller=${argv.seller}&status=collection`;
 
 async function getAllOffers() {
   const res = await fetch(PRICECHARTING_URL, {
@@ -47,6 +55,7 @@ async function run() {
   // console.log(gamesByConsole);
 
   // Fetch games from backloggery
+
 }
 
 run();
