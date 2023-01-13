@@ -181,7 +181,7 @@ async function addGames(page, gamesToAdd, username) {
     await page.locator('select[name="region"]').selectOption(`${game.region}`);
     await page.getByRole("button", { name: "Stealth Add" }).click();
 
-    await page.timeout(1000);
+    await page.waitForTimeout(1000);
   }
 }
 
