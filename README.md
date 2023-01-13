@@ -6,4 +6,4 @@ This tool syncs your games from Pricecharting to Backloggery.
 
 1. Clone the repo
 1. Install dependencies: `npm i`
-1. Run the script `node index.js --seller [pricecharting seller id]
+1. Run the script `node index.js --seller [pricecharting seller id]`
