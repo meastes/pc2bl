@@ -180,6 +180,8 @@ async function addGames(page, gamesToAdd, username) {
     await page.locator('select[name="console"]').selectOption(game.console);
     await page.locator('select[name="region"]').selectOption(`${game.region}`);
     await page.getByRole("button", { name: "Stealth Add" }).click();
+
+    await page.timeout(1000);
   }
 }
 
@@ -189,7 +191,6 @@ async function run() {
   const password = prompt.hide("Backloggery Password: ");
 
   // Fetch all games from pricecharting
-  const gamesByConsole = {};
   const offers = await getAllOffers();
   const pricechartingGames = getPricechartingGames(offers);
 
