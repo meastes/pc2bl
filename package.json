@@ -1,15 +1,16 @@
 {
   "name": "pc2bl",
   "version": "1.0.0",
-  "description": "",
+  "description": "Syncs games from Pricecharting to Backloggery",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "meastes",
+  "license": "MIT",
   "dependencies": {
-    "mechanize": "^1.3.0",
+    "playwright": "^1.29.2",
+    "prompt-sync": "^4.2.0",
     "yargs": "^17.6.2"
   }
 }
