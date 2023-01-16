@@ -56,7 +56,7 @@ const PRICECHARTING_TO_BACKLOGGERY_CONSOLE_MAP = {
   "Sega Dreamcast": { name: "DC", region: Region.NA },
   "Sega Game Gear": { name: "GG", region: Region.NA },
   "Sega Genesis": { name: "GEN", region: Region.NA },
-  "Super Famicom": { name: "NES", region: Region.Japan },
+  "Super Famicom": { name: "SNES", region: Region.Japan },
   "Super Nintendo": { name: "SNES", region: Region.NA },
   "TurboGrafx-16": { name: "TG16", region: Region.NA },
   Wii: { name: "Wii", region: Region.NA },
