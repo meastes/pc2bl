@@ -14,6 +14,7 @@ if (!argv.seller) {
 
 const PRICECHARTING_URL = `https://www.pricecharting.com/offers?seller=${argv.seller}&status=collection`;
 const BACKLOGGERY_URL = "https://www.backloggery.com";
+const COMPILATION = "COMPILATION";
 
 // Matches Backloggery region select
 const Region = {
@@ -143,7 +144,12 @@ async function getBackloggeryGames(page, username) {
   for (let i = 0; i < gameEls.length; i++) {
     const gameEl = gameEls[i];
     const game = (await gameEl.locator("h2 > b").textContent()).trim();
-    const console = (await gameEl.locator(".gamerow > b").textContent()).trim();
+    let console = COMPILATION;
+    try {
+      console = (await gameEl.locator(".gamerow > b").textContent()).trim();
+    } catch {
+      // If console is not found, it's a compilation
+    }
     if (!gamesByConsole[console]) {
       gamesByConsole[console] = [game];
     } else {
@@ -158,7 +164,10 @@ function getGamesToAdd(pricechartingGames, backloggeryGames) {
   const gamesToAdd = pricechartingGames
     .map((game) => {
       if (
-        backloggeryGames[game.console]?.some((blGame) => game.name === blGame)
+        backloggeryGames[game.console]?.some(
+          (blGame) => game.name === blGame
+        ) ||
+        backloggeryGames[COMPILATION]?.some((blGame) => game.name === blGame)
       ) {
         return null;
       }
@@ -182,6 +191,8 @@ async function addGames(page, gamesToAdd, username) {
     await page.getByRole("button", { name: "Stealth Add" }).click();
 
     await page.waitForTimeout(1000);
+
+    console.log(`${game.name} added`);
   }
 }
 
