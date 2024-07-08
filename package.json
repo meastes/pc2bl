@@ -1,6 +1,6 @@
 {
   "name": "pc2bl",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Syncs games from Pricecharting to Backloggery",
   "main": "index.js",
   "scripts": {

@@ -13,57 +13,69 @@ if (!argv.seller) {
 }
 
 const PRICECHARTING_URL = `https://www.pricecharting.com/offers?seller=${argv.seller}&status=collection`;
-const BACKLOGGERY_URL = "https://www.backloggery.com";
-const COMPILATION = "COMPILATION";
+const BACKLOGGERY_URL = "https://backloggery.com";
 
 // Matches Backloggery region select
 const Region = {
-  NA: 0,
-  Japan: 1,
-  PAL: 2,
-  China: 3,
-  Korea: 4,
-  Brazil: 5,
+  Free: 1,
+  NA: 2,
+  Japan: 3,
+  PAL: 4,
+  China: 5,
+  Korea: 6,
+  Brazil: 7,
+  Asia: 8,
 };
 
 const PRICECHARTING_TO_BACKLOGGERY_CONSOLE_MAP = {
   Amiibo: undefined,
-  "Asian English Switch": { name: "Switch", region: Region.Korea },
-  "Game &amp; Watch": { name: "GW", region: Region.NA },
-  GameBoy: { name: "GB", region: Region.NA },
-  "GameBoy Advance": { name: "GBA", region: Region.NA },
-  "GameBoy Color": { name: "GBC", region: Region.NA },
-  Gamecube: { name: "GCN", region: Region.NA },
-  "JP Nintendo Switch": { name: "Switch", region: Region.Japan },
-  "JP PC Engine": { name: "TG16", region: Region.Japan },
-  "JP PC Engine CD": { name: "TGCD", region: Region.Japan },
-  NES: { name: "NES", region: Region.NA },
-  "Nintendo 3DS": { name: "3DS", region: Region.NA },
-  "Nintendo 64": { name: "N64", region: Region.NA },
-  "Nintendo DS": { name: "NDS", region: Region.NA },
-  "Nintendo Switch": { name: "Switch", region: Region.NA },
-  "PAL Nintendo Switch": { name: "Switch", region: Region.PAL },
-  "PAL Playstation 4": { name: "PS4", region: Region.PAL },
-  "PAL Xbox 360": { name: "360", region: Region.PAL },
+  "Asian English Switch": { name: "Nintendo Switch", region: Region.Korea },
+  "Game &amp; Watch": { name: "Miscellaneous", region: Region.NA },
+  GameBoy: { name: "Game Boy", region: Region.NA },
+  "GameBoy Advance": { name: "Game Boy Advance", region: Region.NA },
+  "GameBoy Color": { name: "Game Boy Color", region: Region.NA },
+  Gamecube: { name: "Nintendo GameCube", region: Region.NA },
+  "JP Nintendo DS": { name: "Nintendo DS", region: Region.Japan },
+  "JP Nintendo Switch": { name: "Nintendo Switch", region: Region.Japan },
+  "JP PC Engine": { name: "TurboGrafx-16", region: Region.Japan },
+  "JP PC Engine CD": { name: "TurboGrafx-CD", region: Region.Japan },
+  "JP Super CD-Rom": { name: "TurboGrafx-CD", region: Region.Japan },
+  NES: { name: "Nintendo Entertainment System", region: Region.NA },
+  "Nintendo 3DS": { name: "Nintendo 3DS", region: Region.NA },
+  "Nintendo 64": { name: "Nintendo 64", region: Region.NA },
+  "Nintendo DS": { name: "Nintendo DS", region: Region.NA },
+  "Nintendo Switch": { name: "Nintendo Switch", region: Region.NA },
+  "PAL Nintendo Switch": { name: "Nintendo Switch", region: Region.PAL },
+  "PAL Playstation 4": { name: "PlayStation 4", region: Region.PAL },
+  "PAL Xbox 360": { name: "Xbox 360", region: Region.PAL },
   "PC Games": { name: "Steam", region: Region.NA },
-  PSP: { name: "PSP", region: Region.NA },
-  Playstation: { name: "PS", region: Region.NA },
-  "Playstation 2": { name: "PS2", region: Region.NA },
-  "Playstation 3": { name: "PS3", region: Region.NA },
-  "Playstation 4": { name: "PS4", region: Region.NA },
-  "Playstation 5": { name: "PS5", region: Region.NA },
-  "Playstation Vita": { name: "PSVita", region: Region.NA },
-  "Sega CD": { name: "SCD", region: Region.NA },
-  "Sega Dreamcast": { name: "DC", region: Region.NA },
-  "Sega Game Gear": { name: "GG", region: Region.NA },
-  "Sega Genesis": { name: "GEN", region: Region.NA },
-  "Super Famicom": { name: "SNES", region: Region.Japan },
-  "Super Nintendo": { name: "SNES", region: Region.NA },
-  "TurboGrafx-16": { name: "TG16", region: Region.NA },
+  PSP: { name: "PlayStation Portable", region: Region.NA },
+  "JP PSP": { name: "PlayStation Portable", region: Region.Japan },
+  Playstation: { name: "PlayStation", region: Region.NA },
+  "Playstation 2": { name: "PlayStation 2", region: Region.NA },
+  "Playstation 3": { name: "PlayStation 3", region: Region.NA },
+  "Playstation 4": { name: "PlayStation 4", region: Region.NA },
+  "Playstation 5": { name: "PlayStation 5", region: Region.NA },
+  "Playstation Vita": { name: "PlayStation Vita", region: Region.NA },
+  "Sega CD": { name: "Sega CD", region: Region.NA },
+  "Sega Dreamcast": { name: "Dreamcast", region: Region.NA },
+  "Sega Game Gear": { name: "Sega Game Gear", region: Region.NA },
+  "Sega Genesis": { name: "Sega Genesis", region: Region.NA },
+  "Super Famicom": {
+    name: "Super Nintendo Entertainment System",
+    region: Region.Japan,
+  },
+  "Super Nintendo": {
+    name: "Super Nintendo Entertainment System",
+    region: Region.NA,
+  },
+  "TurboGrafx-16": { name: "TurboGrafx-16", region: Region.NA },
   Wii: { name: "Wii", region: Region.NA },
-  "Wii U": { name: "WiiU", region: Region.NA },
+  "Wii U": { name: "Wii U", region: Region.NA },
+  WonderSwan: { name: "WonderSwan", region: Region.Japan },
+  "WonderSwan Color": { name: "WonderSwan Color", region: Region.Japan },
   Xbox: { name: "Xbox", region: Region.NA },
-  "Xbox One": { name: "XBO", region: Region.NA },
+  "Xbox One": { name: "Xbox One", region: Region.NA },
 };
 
 async function getAllOffers() {
@@ -98,11 +110,12 @@ function getPricechartingGames(offers) {
 
   offers.forEach((offer) => {
     const gameName = offer["product-name"];
-    const console = offer["console-name"];
-    const blConsole = PRICECHARTING_TO_BACKLOGGERY_CONSOLE_MAP[console];
+    const gameConsole = offer["console-name"];
+    const blConsole = PRICECHARTING_TO_BACKLOGGERY_CONSOLE_MAP[gameConsole];
 
     // If no matching console in BL, skip it
     if (!blConsole) {
+      // console.log(`Missing console: ${gameConsole}`);
       return;
     }
 
@@ -118,14 +131,14 @@ function getPricechartingGames(offers) {
 }
 
 async function loginToBackloggery(page, username, password) {
-  await page.goto(`${BACKLOGGERY_URL}/login.php`);
+  await page.goto(`${BACKLOGGERY_URL}/!/login`);
   await page.getByRole("textbox", { name: "username" }).fill(username);
   await page.getByRole("textbox", { name: "password" }).fill(password);
-  await page.getByRole("button", { name: "Submit" }).click();
+  await page.getByRole("button", { name: "Log In" }).click();
   try {
     await page.waitForFunction(
       (loginUrl) => window.location.href !== loginUrl,
-      `${BACKLOGGERY_URL}/login.php`,
+      `${BACKLOGGERY_URL}/!/login`,
       { timeout: 5000 }
     );
   } catch {
@@ -134,28 +147,23 @@ async function loginToBackloggery(page, username, password) {
   }
 }
 
-async function getBackloggeryGames(page, username) {
-  await page.goto(
-    `${BACKLOGGERY_URL}/ajax_moregames.php?user=${username}&console=&rating=&status=&unplayed=&own=&search=&comments=&region=&region_u=0&wish=&alpha=&temp_sys=ZZZ&total=2&aid=1&ajid=0`
-  );
+async function getBackloggeryGames(username) {
+  const res = await fetch(`${BACKLOGGERY_URL}/api/fetch_library.php`, {
+    method: "POST",
+    body: JSON.stringify({ type: "load_user_library", username }),
+  });
+  const json = await res.json();
 
-  const gameEls = await page.locator("section.gamebox:not(.systemend)").all();
+  const { payload } = json;
   const gamesByConsole = {};
-  for (let i = 0; i < gameEls.length; i++) {
-    const gameEl = gameEls[i];
-    const game = (await gameEl.locator("h2 > b").textContent()).trim();
-    let console = COMPILATION;
-    try {
-      console = (await gameEl.locator(".gamerow > b").textContent()).trim();
-    } catch {
-      // If console is not found, it's a compilation
-    }
+  payload.forEach((game) => {
+    const { title, platform_title: console } = game;
     if (!gamesByConsole[console]) {
-      gamesByConsole[console] = [game];
+      gamesByConsole[console] = [title];
     } else {
-      gamesByConsole[console].push(game);
+      gamesByConsole[console].push(title);
     }
-  }
+  });
 
   return gamesByConsole;
 }
@@ -164,10 +172,7 @@ function getGamesToAdd(pricechartingGames, backloggeryGames) {
   const gamesToAdd = pricechartingGames
     .map((game) => {
       if (
-        backloggeryGames[game.console]?.some(
-          (blGame) => game.name === blGame
-        ) ||
-        backloggeryGames[COMPILATION]?.some((blGame) => game.name === blGame)
+        backloggeryGames[game.console]?.some((blGame) => game.name === blGame)
       ) {
         return null;
       }
@@ -178,17 +183,16 @@ function getGamesToAdd(pricechartingGames, backloggeryGames) {
   return gamesToAdd;
 }
 
-async function addGames(page, gamesToAdd, username) {
-  await page.goto(`${BACKLOGGERY_URL}/newgame.php?user=${username}`);
-  await page.getByRole("button", { name: "Toggle" }).click();
+async function addGames(page, gamesToAdd) {
+  await page.goto(`${BACKLOGGERY_URL}/!/add`);
 
   for (let i = 0; i < gamesToAdd.length; i++) {
     const game = gamesToAdd[i];
 
-    await page.locator('input[name="name"]').fill(game.name);
-    await page.locator('select[name="console"]').selectOption(game.console);
-    await page.locator('select[name="region"]').selectOption(`${game.region}`);
-    await page.getByRole("button", { name: "Stealth Add" }).click();
+    await page.locator('input[type="text"]').first().fill(game.name);
+    await page.locator("select").nth(2).selectOption(game.console);
+    await page.locator("select").nth(4).selectOption(`${game.region}`);
+    await page.getByRole("button", { name: "Stealth Save" }).click();
 
     await page.waitForTimeout(1000);
 
@@ -206,14 +210,17 @@ async function run() {
   const pricechartingGames = getPricechartingGames(offers);
 
   // Fetch games from backloggery
-  const browser = await chromium.launch();
-  const page = await browser.newPage();
-
-  await loginToBackloggery(page, username, password);
-  const backloggeryGames = await getBackloggeryGames(page, username);
+  const backloggeryGames = await getBackloggeryGames(username);
 
   // Games to add are those in pricecharting but missing from backloggery
   const gamesToAdd = getGamesToAdd(pricechartingGames, backloggeryGames);
+  console.log(gamesToAdd);
+
+  // Start the browser to login and add the games
+  const browser = await chromium.launch(/*{ headless: false }*/);
+  const page = await browser.newPage();
+  await loginToBackloggery(page, username, password);
+
   if (gamesToAdd.length > 0) {
     await addGames(page, gamesToAdd, username);
     console.log(`${gamesToAdd.length} games added`);
